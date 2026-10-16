@@ -1,0 +1,280 @@
+/* The Hugo theme's own layout. The ink comes from zenith.css, which the app
+   generates (`zenith --css`); nothing here names a colour. */
+
+:root { --size: 17px; --rail: 15rem; --rail-right: 15rem; }
+
+html.zen .rail, html.zen .status { display: none; }
+html.zen .app { grid-template-columns: 1fr; }
+html.zen .page { max-width: calc(var(--measure) + 6rem); }
+
+body { font-size: var(--size); padding: 0; max-width: none; }
+
+/* -- the three columns ---------------------------------------------------- */
+.app {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr) var(--rail-right);
+  min-height: 100vh;
+  background: var(--paper);
+}
+.rail {
+  background: var(--panel);
+  font-family: var(--voice-ui);
+  font-size: 0.78em;
+  padding: 1.1rem 0.9rem 4rem;
+  overflow-y: auto;
+  max-height: 100vh;
+  position: sticky;
+  top: 0;
+}
+.rail-left { border-right: 1px solid var(--edge); }
+.rail-right { border-left: 1px solid var(--edge); }
+.rail-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem; }
+.brand { font-family: var(--voice-prose); font-size: 1.15em; color: var(--ink); border: 0; }
+.rail-where { color: var(--ink-faint); }
+.rail-block { margin-bottom: 1.6rem; }
+.rail-title {
+  font-family: var(--voice-ui);
+  font-size: 0.78em;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 0.5rem;
+}
+.rail-note { color: var(--ink-faint); line-height: 1.5; margin: 0; }
+.rail-note a { color: var(--ink-soft); border: 0; display: block; padding: 0.15rem 0; }
+
+/* -- the file tree -------------------------------------------------------- */
+.tree { line-height: 1.7; }
+.tree details { margin: 0; }
+.tree summary {
+  cursor: pointer;
+  color: var(--ink-soft);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 3px;
+}
+.tree summary::-webkit-details-marker { display: none; }
+.tree summary:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); }
+/* The caret is a shape, not a glyph: no font on any machine can fail to draw it. */
+.caret {
+  width: 0; height: 0;
+  border-left: 4px solid var(--ink-faint);
+  border-top: 3.5px solid transparent;
+  border-bottom: 3.5px solid transparent;
+  transition: transform 0.12s ease;
+  flex: none;
+}
+details[open] > summary > .caret { transform: rotate(90deg) translateX(1px); }
+.tree .count { margin-left: auto; color: var(--ink-faint); opacity: 0.7; }
+.tree ul { list-style: none; margin: 0; padding-left: 0.9rem; }
+.tree .file {
+  display: block;
+  padding: 0.05rem 0.3rem;
+  border-radius: 3px;
+  color: var(--ink-soft);
+  border: 0;
+  font-family: var(--voice-code);
+  font-size: 0.94em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tree .file::before { content: "· "; color: var(--ink-faint); }
+.tree .file:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--ink); }
+.tree .file.here { background: var(--selection); color: var(--ink); }
+.tree nav:focus { outline: none; }
+.tree .cursor { background: color-mix(in srgb, var(--ink) 10%, transparent); }
+.tree summary.cursor, .tree .file.cursor { outline: 1px solid var(--accent-soft); outline-offset: -1px; }
+
+/* -- the page ------------------------------------------------------------- */
+.page {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 2.6rem 2rem 6rem;
+  width: 100%;
+}
+.file-path {
+  font-family: var(--voice-code);
+  font-size: 0.72em;
+  color: var(--ink-faint);
+  margin-bottom: 0.6rem;
+}
+.file-title { margin: 0 0 0.7rem; font-size: var(--h1); }
+.file-rule { border-top: 1px solid var(--edge); margin-bottom: 1.1rem; }
+.file-meta {
+  font-family: var(--voice-code);
+  font-size: 0.76em;
+  line-height: 1.55;
+  color: var(--ink-faint);
+  background: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  white-space: pre-wrap;
+}
+.file-meta .meta-mark { color: var(--tone-punct); }
+.file-meta .meta-key { color: var(--tone-keyword-soft); }
+.file-meta .meta-val { color: var(--tone-str); }
+
+.prose { color: var(--ink-soft); }
+.prose > p:first-child { margin-top: 0; }
+.file-foot { margin-top: 3rem; border-top: 1px solid var(--edge); padding-top: 0.8rem;
+  font-family: var(--voice-ui); font-size: 0.8em; color: var(--ink-faint); }
+.file-foot .tags a { margin-right: 0.6rem; color: var(--ink-faint); border: 0; }
+.nextprev { display: flex; justify-content: space-between; gap: 1rem; }
+.nextprev a { border: 0; color: var(--ink-soft); max-width: 48%; }
+
+/* -- listings: files, not cards ------------------------------------------- */
+.listing { list-style: none; padding: 0; margin: 0; font-family: var(--voice-ui); font-size: 0.88em; }
+.listing li { display: flex; align-items: baseline; gap: 0.6rem; padding: 0.22rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--edge) 45%, transparent); }
+.listing .file { font-family: var(--voice-code); font-size: 0.9em; color: var(--ink-faint); border: 0;
+  flex: none; width: 15.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.listing-title { color: var(--ink-soft); border: 0; flex: 1; }
+.listing-date { color: var(--ink-faint); font-family: var(--voice-code); font-size: 0.85em; }
+
+/* -- the status bar ------------------------------------------------------- */
+.status {
+  position: fixed;
+  inset: auto 0 0 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.3rem 1rem;
+  background: var(--panel);
+  border-top: 1px solid var(--edge);
+  font-family: var(--voice-ui);
+  font-size: 0.72em;
+  color: var(--ink-faint);
+  z-index: 5;
+}
+.status-hint { text-align: right; }
+.key {
+  font-family: var(--voice-code);
+  font-size: 0.95em;
+  color: var(--ink-soft);
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  border-radius: 3px;
+  padding: 0 0.25em;
+}
+
+/* -- the spine: where you are in the file --------------------------------- */
+.spine {
+  position: fixed;
+  top: 0; right: 0;
+  width: 6px; height: 100vh;
+  z-index: 6;
+  pointer-events: none;
+}
+.spine::before { content: ""; position: absolute; left: 2px; top: 0; width: 2px; height: 100%;
+  background: color-mix(in srgb, var(--edge) 100%, transparent); }
+.spine::after { content: ""; position: absolute; left: 2px; width: 2px; min-height: 30px;
+  background: var(--accent); opacity: 0.85;
+  top: calc(var(--at, 0) * (100vh - 30px)); height: 30px; }
+html.zen .spine::before { opacity: 0.5; }
+
+/* -- code, rethought ------------------------------------------------------ */
+.highlight {
+  position: relative;
+  margin: 1.5rem 0;
+  background: color-mix(in srgb, var(--ink-faint) 10%, transparent);
+  border-radius: 4px;
+}
+.highlight pre {
+  margin: 0;
+  padding: 0.9rem 1rem 0.9rem 0;
+  background: none;
+  border-radius: 0;
+  /* Long lines wrap rather than scroll away, and the wrap hangs under the code,
+     not under the line number — the app's hanging indent, on the web. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 2;
+}
+/* A line is a block, its number is pinned in the gutter beside it. */
+.highlight .line { display: block; padding-left: 3.2rem; position: relative; min-height: 1.45em; }
+.highlight .ln {
+  position: absolute;
+  left: 0;
+  width: 2.4rem;
+  text-align: right;
+  color: color-mix(in srgb, var(--ink-faint) 55%, transparent);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.highlight .cl { display: inline; }
+
+/* The language, named quietly in the corner. */
+.highlight::after {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0.3rem;
+  right: 0.6rem;
+  font-family: var(--voice-code);
+  font-size: 0.68em;
+  color: var(--ink-faint);
+  opacity: 0.65;
+}
+.copy-button {
+  position: absolute;
+  top: 0.28rem;
+  right: 0.6rem;
+  font-family: var(--voice-ui);
+  font-size: 0.68em;
+  color: var(--ink-faint);
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.highlight:hover .copy-button { opacity: 1; }
+.highlight:hover::after { opacity: 0; }
+.copy-button:hover { color: var(--ink); }
+
+/* `d`: distil the code — the punctuation recedes, the words stay. */
+html.distil .chroma .p, html.distil .chroma .o, html.distil .chroma .ow,
+html.distil .chroma .nt, html.distil .chroma .nl { opacity: 0.4; }
+html.distil .chroma .s, html.distil .chroma .s1, html.distil .chroma .s2 { opacity: 0.75; }
+
+/* -- focus lens: everything but the paragraph you are reading ------------- */
+html.focus .prose > *:not(.lens) { opacity: 0.22; transition: opacity 0.15s; }
+html.focus .prose > .lens { opacity: 1; }
+
+/* -- overlays ------------------------------------------------------------- */
+.overlay { position: fixed; inset: 0; z-index: 20; background: color-mix(in srgb, var(--paper) 72%, transparent);
+  backdrop-filter: blur(2px); }
+.finder-box { max-width: 34rem; margin: 12vh auto 0; background: var(--panel); border: 1px solid var(--edge);
+  border-radius: 6px; font-family: var(--voice-ui); overflow: hidden; }
+.finder-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.8rem; }
+.finder-row input { flex: 1; border: 0; background: none; outline: none; color: var(--ink);
+  font-family: var(--voice-code); font-size: 0.95em; }
+.finder-list { list-style: none; margin: 0; padding: 0; max-height: 50vh; overflow-y: auto; }
+.finder-list li { padding: 0.35rem 0.8rem; display: flex; justify-content: space-between; gap: 1rem;
+  font-size: 0.86em; color: var(--ink-soft); cursor: pointer; }
+.finder-list li[aria-selected="true"] { background: var(--selection); color: var(--ink); }
+.finder-list .f-name { font-family: var(--voice-code); color: var(--ink-faint); }
+.help-box { max-width: 30rem; margin: 10vh auto 0; background: var(--panel); border: 1px solid var(--edge);
+  border-radius: 6px; padding: 1rem 1.2rem; font-family: var(--voice-ui); font-size: 0.85em; }
+.help-box h2 { font-family: var(--voice-prose); margin-top: 0; }
+.help-box dl { display: grid; grid-template-columns: 8rem 1fr; gap: 0.25rem 0.8rem; margin: 0; }
+.help-box dt { text-align: right; }
+.help-box dd { margin: 0; color: var(--ink-faint); }
+
+/* -- narrow: the app's panels fold away ----------------------------------- */
+@media (max-width: 1100px) {
+  .app { grid-template-columns: var(--rail) minmax(0, 1fr); }
+  .rail-right { display: none; }
+}
+@media (max-width: 780px) {
+  .app { grid-template-columns: 1fr; }
+  .rail-left { position: static; max-height: none; border-right: 0; border-bottom: 1px solid var(--edge); }
+  .page { padding: 1.6rem 1.1rem 5rem; }
+  .listing .file { width: auto; }
+  .status-hint { display: none; }
+}

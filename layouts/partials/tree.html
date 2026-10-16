@@ -1,0 +1,22 @@
+{{- $here := .RelPermalink -}}
+{{- $posts := where .Site.RegularPages "Section" "post" -}}
+{{- $years := $posts.GroupByDate "2006" -}}
+<nav class="tree" aria-label="{{ i18n "posts" }}">
+  <details class="dir" open>
+    <summary><span class="caret" aria-hidden="true"></span>post<span class="count">{{ len $posts }}</span></summary>
+    {{- range $years }}
+    {{- $year := .Key -}}
+    {{- $hasHere := false -}}
+    {{- range .Pages }}{{ if eq .RelPermalink $here }}{{ $hasHere = true }}{{ end }}{{ end }}
+    <details class="dir dir-year" {{ if $hasHere }}open{{ end }}>
+      <summary><span class="caret" aria-hidden="true"></span>{{ $year }}<span class="count">{{ len .Pages }}</span></summary>
+      <ul>
+        {{- range .Pages.ByTitle }}
+        <li><a class="file{{ if eq .RelPermalink $here }} here{{ end }}" href="{{ .RelPermalink }}"
+               title="{{ .Title }}">{{ .File.ContentBaseName }}.md</a></li>
+        {{- end }}
+      </ul>
+    </details>
+    {{- end }}
+  </details>
+</nav>

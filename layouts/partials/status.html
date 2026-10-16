@@ -1,0 +1,13 @@
+<span class="status-left">
+  {{- if .IsPage -}}
+    {{- with .File }}{{ .Path }}{{ end }} · {{ .Date.Format (default "2006-01-02" .Site.Params.dateFormat) }}
+    {{- if .Site.Params.readingTime }} · {{ .ReadingTime }} {{ i18n "minRead" }}{{ end }}
+    {{- if .Site.Params.wordCount }} · {{ .WordCount }} {{ i18n "words" }}{{ end }}
+  {{- else -}}
+    {{ .Site.Title }} · {{ len (where .Site.RegularPages "Section" "post") }} {{ i18n "posts" }}
+  {{- end -}}
+</span>
+<span class="status-hint">
+  <span class="key">/</span> {{ i18n "find" }} · <span class="key">Z</span> {{ i18n "zen" }} ·
+  <span class="key">f</span> {{ i18n "focus" }} · <span class="key">?</span> {{ i18n "keys" }}
+</span>

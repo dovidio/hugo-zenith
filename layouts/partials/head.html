@@ -1,0 +1,23 @@
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ with .Title }}{{ . }} · {{ end }}{{ .Site.Title }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}">
+  {{- with .Params.tags }}<meta name="keywords" content="{{ delimit . ", " }}">{{ end }}
+  {{- template "_internal/opengraph.html" . }}
+  {{- template "_internal/twitter_cards.html" . }}
+  {{- template "_internal/schema.html" . }}
+  {{- with .Site.Params.favicon }}<link rel="icon" href="{{ . | relURL }}">{{ end }}
+  {{- range .AlternativeOutputFormats }}<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}">{{ end }}
+  <script>
+    // Applied before first paint so a reader never sees the wrong paper.
+    (function () {
+      var d = document.documentElement;
+      var t = localStorage.getItem("zenith-theme");
+      if (t && t !== "lugano") d.setAttribute("data-theme", t);
+      var s = localStorage.getItem("zenith-size");
+      if (s) d.style.setProperty("--size", s);
+      if (localStorage.getItem("zenith-zen") === "1") d.classList.add("zen");
+    })();
+  </script>
+  {{- $css := slice (resources.Get "css/zenith.css") (resources.Get "css/theme.css") | resources.Concat "css/all.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}">

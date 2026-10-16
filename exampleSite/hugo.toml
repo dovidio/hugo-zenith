@@ -1,0 +1,23 @@
+baseURL = "https://example.org/"
+title = "A reading room"
+theme = "zenith"
+defaultContentLanguage = "en"
+enableRobotsTXT = true
+
+[params]
+  dateFormat = "2 January 2006"
+  mainSections = ["post"]
+  readingTime = true
+  wordCount = true
+
+[markup]
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+  [markup.highlight]
+    style = 'github'
+    lineNos = true
+    lineNumbersInTable = false
+    noClasses = false
+    useClasses = true
+    tabWidth = 2

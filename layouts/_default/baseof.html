@@ -1,0 +1,45 @@
+{{- $lang := .Site.Language.Lang -}}
+<!DOCTYPE html>
+<html lang="{{ $lang }}" data-zenith>
+<head>
+  {{- partial "head.html" . -}}
+</head>
+<body>
+  <!-- The reading room: a file tree, the page, and a rail of tools — the app's three columns. -->
+  <div class="app">
+    <aside class="rail rail-left" id="tree">
+      <div class="rail-head">
+        <a class="brand" href="{{ "" | relLangURL }}">{{ .Site.Title }}</a>
+        {{- $other := cond (eq $lang "en") "it" "en" -}}
+        {{- $here := .RelPermalink -}}
+        <span class="rail-where">
+          <a href="{{ $here | relURL }}">{{ $lang }}</a>
+          {{- with .Site.Home.AllTranslations -}}
+            {{- range . }}{{ if ne .Language.Lang $lang }}
+            · <a href="{{ .RelPermalink }}">{{ .Language.Lang }}</a>
+            {{- end }}{{ end -}}
+          {{- end -}}
+        </span>
+      </div>
+      {{- partial "tree.html" . -}}
+    </aside>
+
+    <main class="page" id="page">
+      {{- block "main" . }}{{- end }}
+    </main>
+
+    <aside class="rail rail-right" id="rail">
+      {{- partial "rail.html" . -}}
+    </aside>
+  </div>
+
+  <div class="status" id="status">
+    {{- partial "status.html" . -}}
+  </div>
+  <div class="spine" id="spine" aria-hidden="true"></div>
+
+  {{- partial "overlays.html" . -}}
+  {{- $js := resources.Get "js/zenith.js" | minify | fingerprint -}}
+  <script src="{{ $js.RelPermalink }}" defer></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{{- if .IsPage }}
+<section class="rail-block">
+  <h2 class="rail-title">{{ i18n "contents" }}</h2>
+  {{- $toc := .TableOfContents -}}
+  {{- if gt (len (findRE "<li" $toc)) 0 }}
+  <nav class="toc">{{ $toc }}</nav>
+  {{- else }}
+  <p class="rail-note">{{ i18n "noHeadings" }}</p>
+  {{- end }}
+</section>
+{{- end }}
+<section class="rail-block">
+  <h2 class="rail-title">{{ i18n "tools" }}</h2>
+  <ul class="tools">
+    <li><button data-act="find" type="button"><span class="key">/</span> {{ i18n "findPost" }}</button></li>
+    <li><button data-act="zen" type="button"><span class="key">Z</span> {{ i18n "zen" }}</button></li>
+    <li><button data-act="focus" type="button"><span class="key">f</span> {{ i18n "focus" }}</button></li>
+    <li><button data-act="source" type="button"><span class="key">x</span> {{ i18n "source" }}</button></li>
+    <li><button data-act="distil" type="button"><span class="key">d</span> {{ i18n "distil" }}</button></li>
+    <li><button data-act="help" type="button"><span class="key">?</span> {{ i18n "keys" }}</button></li>
+  </ul>
+</section>
+<section class="rail-block">
+  <h2 class="rail-title">{{ i18n "themes" }}</h2>
+  <ul class="themes">
+    {{- range $i, $t := slice "lugano" "maionese" "bibione" "kununurra" "panittha" "newsprint" }}
+    <li><button data-theme-set="{{ $t }}" type="button"><span class="key">{{ add $i 1 }}</span> {{ $t }}</button></li>
+    {{- end }}
+  </ul>
+</section>
+{{- if .IsPage }}
+<section class="rail-block">
+  <h2 class="rail-title">{{ i18n "read" }}</h2>
+  <p class="rail-note">
+    {{- with .NextInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a><br>{{ end }}
+    {{- with .PrevInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ end }}
+  </p>
+</section>
+{{- end }}

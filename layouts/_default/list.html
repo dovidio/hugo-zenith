@@ -1,0 +1,22 @@
+{{ define "main" }}
+{{- $posts := where .Site.RegularPages "Section" "post" -}}
+<article class="post">
+  <header class="file-head">
+    <div class="file-path">{{ .RelPermalink }}</div>
+    <h1 class="file-title">{{ with .Title }}{{ . }}{{ else }}{{ i18n "allPosts" }}{{ end }}</h1>
+    <div class="file-rule" aria-hidden="true"></div>
+  </header>
+  <div class="prose">
+    {{ .Content }}
+    <ul class="listing">
+      {{- range $posts.ByDate.Reverse }}
+      <li>
+        <a class="file" href="{{ .RelPermalink }}">{{ .File.ContentBaseName }}.md</a>
+        <span class="listing-title">{{ .Title }}</span>
+        <span class="listing-date">{{ .Date.Format "2006-01-02" }}</span>
+      </li>
+      {{- end }}
+    </ul>
+  </div>
+</article>
+{{ end }}

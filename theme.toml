@@ -1,0 +1,9 @@
+name = "Zenith"
+license = "MIT"
+description = "A reading room for a blog: a file tree, tonal code, three voices, and six place-named themes."
+homepage = "https://github.com/dovidio/zenith"
+min_version = "0.128.0"
+tags = ["blog", "readable", "minimal", "syntax-highlighting"]
+
+[author]
+  name = "Umberto D'Ovidio"
