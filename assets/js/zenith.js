@@ -81,20 +81,31 @@
   /* ---- the tree -------------------------------------------------------- */
   var tree = $("#tree");
   var items = [];
+  /* Only the rows actually on screen: a link inside a folded folder is not a row you can
+     move to, and focus cannot follow the cursor into something that is not rendered. The
+     app's tree makes the same distinction — it walks the rows it is showing. */
   function collect() {
-    items = $$("#tree summary, #tree .file");
+    items = $$("#tree summary, #tree .file").filter(function (el) {
+      return el.offsetParent !== null;
+    });
     items.forEach(function (el, i) { el.dataset.i = i; });
   }
   collect();
   var cur = -1;
-  function cursor(i, scroll) {
+  /* The vim cursor and the browser's focus are kept as one thing: moving with j/k moves
+     focus, and tabbing into the tree moves the cursor. That is what makes the two ways of
+     driving this agree instead of fighting — and it is why `tab` is left to the browser,
+     where it belongs, rather than being swallowed by a modal "tree mode". */
+  function cursor(i, scroll, focus) {
     if (!items.length) return;
     items.forEach(function (el) { el.classList.remove("cursor"); });
     cur = Math.max(0, Math.min(items.length - 1, i));
     var el = items[cur];
     el.classList.add("cursor");
     if (scroll !== false) el.scrollIntoView({ block: "nearest" });
+    if (focus) el.focus({ preventScroll: true });
   }
+  function inTree() { return !!(tree && tree.contains(document.activeElement)); }
   function rowOf(el) { return el && el.classList.contains("file") ? items.indexOf(el) : -1; }
   function openAt(el) {
     if (!el) return;
@@ -116,12 +127,23 @@
     }
   }
   if (tree) {
-    /* Start where the reader already is: the current file. */
+    /* Start where the reader already is: the current file. On a phone the tree is a
+       scrollable peek, so this is also what puts the current file in the window. */
     var here = $(".tree .file.here");
-    if (here) cursor(rowOf(here) >= 0 ? rowOf(here) : 0, false);
+    if (here) {
+      cursor(rowOf(here) >= 0 ? rowOf(here) : 0, false);
+      if (here.offsetTop > tree.clientHeight) {
+        tree.scrollTop = here.offsetTop - tree.clientHeight / 2;
+      }
+    }
     tree.addEventListener("click", function (e) {
       var el = e.target.closest("summary, .file");
       if (el) cursor(rowOf(el) >= 0 ? rowOf(el) : items.indexOf(el), false);
+    });
+    /* Reaching the tree with tab, or with the mouse, puts the cursor where you are. */
+    tree.addEventListener("focusin", function (e) {
+      var i = items.indexOf(e.target);
+      if (i >= 0) { cur = i; items.forEach(function (el) { el.classList.remove("cursor"); }); e.target.classList.add("cursor"); }
     });
   }
 
@@ -180,8 +202,24 @@
     if (li) location.href = li.dataset.href;
   }
 
+  /* ---- moving through the post, the way the app does ------------------- */
+  /* In zenith, j and k move *within* the file and n and p move *between* files. The first
+     version of this got that backwards — j and k jumped to the next post — which made the
+     page feel like it only knew how to leave. */
+  function line() {
+    var lh = parseFloat(getComputedStyle(document.body).lineHeight);
+    return isNaN(lh) ? 26 : lh;
+  }
+  function scrollBy_(px) { window.scrollBy({ top: px, behavior: "smooth" }); }
+  function toTop() { window.scrollTo({ top: 0, behavior: "smooth" }); }
+  function toBottom() { window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); }
+  function post(which) {
+    var a = $(".nextprev ." + which);
+    if (a) location.href = a.getAttribute("href");
+  }
+
   /* ---- keys ------------------------------------------------------------ */
-  var inTree = false;
+  var pendingG = 0;
   document.addEventListener("keydown", function (e) {
     var typing = /^(INPUT|TEXTAREA)$/.test(e.target.tagName);
     var cmd = e.metaKey || e.ctrlKey;
@@ -190,7 +228,8 @@
     if (e.key === "Escape") {
       if (!$("#help").hidden) { $("#help").hidden = true; return; }
       if (!finderBox.hidden) { finder(false); return; }
-      inTree = false; html.classList.remove("in-tree");
+      /* Esc leaves the tree, because that is what it means everywhere else: out. */
+      if (inTree()) { document.activeElement.blur(); return; }
       return;
     }
     if (!finderBox.hidden) {
@@ -201,22 +240,37 @@
     }
     if (typing) return;
 
-    if (e.key === "tab") { e.preventDefault(); inTree = !inTree; html.classList.toggle("in-tree", inTree); if (inTree) cursor(cur < 0 ? 0 : cur); return; }
+    /* `tab` is not ours: it is how a keyboard reaches the tree, and how anyone using a
+       keyboard reaches every link on the page. */
     if (e.key === "?") { e.preventDefault(); acts.help(); return; }
     if (e.key === "/") { e.preventDefault(); finder(true); return; }
 
-    if (inTree) {
-      if (e.key === "j") { e.preventDefault(); cursor(cur + 1); return; }
-      if (e.key === "k") { e.preventDefault(); cursor(cur - 1); return; }
+    if (inTree()) {
+      if (e.key === "j") { e.preventDefault(); cursor(cur + 1, true, true); return; }
+      if (e.key === "k") { e.preventDefault(); cursor(cur - 1, true, true); return; }
       if (e.key === "l" || e.key === "Enter") { e.preventDefault(); openAt(items[cur]); return; }
       if (e.key === "h") { e.preventDefault(); back(); return; }
-      if (e.key === "g") { e.preventDefault(); cursor(0); return; }
-      if (e.key === "G") { e.preventDefault(); cursor(items.length - 1); return; }
+      if (e.key === "g") { e.preventDefault(); cursor(0, true, true); return; }
+      if (e.key === "G") { e.preventDefault(); cursor(items.length - 1, true, true); return; }
+      if (e.key === "n") { e.preventDefault(); post("next"); return; }
+      if (e.key === "p") { e.preventDefault(); post("prev"); return; }
       return;
     }
 
-    if (e.key === "j" || e.key === "J") { var n = $(".nextprev .next"); if (n) location.href = n.getAttribute("href"); return; }
-    if (e.key === "k" || e.key === "K") { var p = $(".nextprev .prev"); if (p) location.href = p.getAttribute("href"); return; }
+    /* In the page: vim's own meanings. */
+    if (e.key === "j") { e.preventDefault(); scrollBy_(line()); return; }
+    if (e.key === "k") { e.preventDefault(); scrollBy_(-line()); return; }
+    if (cmd && e.key === "d") { e.preventDefault(); scrollBy_(window.innerHeight / 2); return; }
+    if (cmd && e.key === "u") { e.preventDefault(); scrollBy_(-window.innerHeight / 2); return; }
+    if (e.key === "G") { e.preventDefault(); toBottom(); return; }
+    if (e.key === "g") {
+      e.preventDefault();
+      var now = Date.now();
+      if (now - pendingG < 400) { pendingG = 0; toTop(); } else { pendingG = now; }
+      return;
+    }
+    if (e.key === "n") { e.preventDefault(); post("next"); return; }
+    if (e.key === "p") { e.preventDefault(); post("prev"); return; }
     if (e.key === "x") { acts.source(); return; }
     if (e.key === "d") { acts.distil(); return; }
     if (e.key === "f") { acts.focus(); return; }

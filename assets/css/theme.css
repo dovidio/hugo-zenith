@@ -260,8 +260,25 @@ html.focus .prose > .lens { opacity: 1; }
 }
 @media (max-width: 780px) {
   .app { grid-template-columns: 1fr; }
-  .rail-left { position: static; max-height: none; border-right: 0; border-bottom: 1px solid var(--edge); }
-  .page { padding: 1.6rem 1.1rem 5rem; }
+  /* The tree stops being a column and becomes a peek: a third of the screen, scrollable,
+     so the post starts where a thumb can reach it. The current file is scrolled into view
+     on load, so what the peek shows is where you are. */
+  .rail-left {
+    position: static;
+    max-height: 30vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-right: 0;
+    border-bottom: 1px solid var(--edge);
+    padding: 0.7rem 0.9rem 0.5rem;
+  }
+  .rail-head { margin-bottom: 0.5rem; }
+  .tree { line-height: 1.6; }
+  .tree .file { font-size: 0.9em; }
+  .page { padding: 1.4rem 1.1rem 5rem; }
+  .file-title { font-size: 1.45em; }
   .listing .file { width: auto; }
+  .listing li { flex-wrap: wrap; gap: 0.2rem 0.6rem; }
   .status-hint { display: none; }
+  .help-box, .finder-box { margin: 6vh 0.6rem 0; }
 }

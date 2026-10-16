@@ -1,13 +1,13 @@
+{{- /* A section with nothing in it is not a section: no headings, no contents, and no
+       note telling the reader that there is nothing to tell them. */ -}}
 {{- if .IsPage }}
+{{- $toc := .TableOfContents -}}
+{{- if gt (len (findRE "<li" $toc)) 0 }}
 <section class="rail-block">
   <h2 class="rail-title">{{ i18n "contents" }}</h2>
-  {{- $toc := .TableOfContents -}}
-  {{- if gt (len (findRE "<li" $toc)) 0 }}
   <nav class="toc">{{ $toc }}</nav>
-  {{- else }}
-  <p class="rail-note">{{ i18n "noHeadings" }}</p>
-  {{- end }}
 </section>
+{{- end }}
 {{- end }}
 <section class="rail-block">
   <h2 class="rail-title">{{ i18n "tools" }}</h2>
@@ -28,7 +28,7 @@
     {{- end }}
   </ul>
 </section>
-{{- if .IsPage }}
+{{- if or .NextInSection .PrevInSection }}
 <section class="rail-block">
   <h2 class="rail-title">{{ i18n "read" }}</h2>
   <p class="rail-note">
