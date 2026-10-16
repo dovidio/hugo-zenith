@@ -114,60 +114,60 @@
 }
 
 [data-theme="kununurra"] {
-  --paper: #1c1310;
-  --panel: #170f0d;
-  --panel-deep: #120b09;
-  --edge: #3a241b;
-  --ink: #ede0cb;
-  --ink-soft: #a08c74;
-  --ink-faint: #74624e;
+  --paper: #341a12;
+  --panel: #2b140d;
+  --panel-deep: #22100a;
+  --edge: #5a3220;
+  --ink: #f2dec4;
+  --ink-soft: #c9a98b;
+  --ink-faint: #8e7660;
   --accent: #4fb3a8;
-  --accent-soft: #2c6a66;
-  --selection: #2a1d16;
-  --tone-plain: #e4d6c0;
-  --tone-comment: #8e7a61;
-  --tone-doc: #ac967a;
-  --tone-keyword: #5fc9ba;
-  --tone-keyword-soft: #46968c;
-  --tone-type: #d9a566;
-  --tone-call: #e59a5c;
-  --tone-constant: #e07a5f;
-  --tone-str: #a8c06a;
-  --tone-number: #c0a0d8;
-  --tone-operator: #a79076;
-  --tone-punct: #6e5b48;
-  --tone-meta: #e8b95e;
-  --tone-raw: #e4d6c0;
-  --tone-invalid: #f0685a;
+  --accent-soft: #2c6a63;
+  --selection: #4a2718;
+  --tone-plain: #f2dec4;
+  --tone-comment: #9e8168;
+  --tone-doc: #c0a183;
+  --tone-keyword: #f4794a;
+  --tone-keyword-soft: #c25b36;
+  --tone-type: #e8a165;
+  --tone-call: #ff9e5c;
+  --tone-constant: #e2633f;
+  --tone-str: #a9c06a;
+  --tone-number: #f0c070;
+  --tone-operator: #c39c7a;
+  --tone-punct: #8a6c55;
+  --tone-meta: #ffe0a0;
+  --tone-raw: #f2dec4;
+  --tone-invalid: #ff6b5a;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #1c1310;
-    --panel: #170f0d;
-    --panel-deep: #120b09;
-    --edge: #3a241b;
-    --ink: #ede0cb;
-    --ink-soft: #a08c74;
-    --ink-faint: #74624e;
+    --paper: #341a12;
+    --panel: #2b140d;
+    --panel-deep: #22100a;
+    --edge: #5a3220;
+    --ink: #f2dec4;
+    --ink-soft: #c9a98b;
+    --ink-faint: #8e7660;
     --accent: #4fb3a8;
-    --accent-soft: #2c6a66;
-    --selection: #2a1d16;
-    --tone-plain: #e4d6c0;
-    --tone-comment: #8e7a61;
-    --tone-doc: #ac967a;
-    --tone-keyword: #5fc9ba;
-    --tone-keyword-soft: #46968c;
-    --tone-type: #d9a566;
-    --tone-call: #e59a5c;
-    --tone-constant: #e07a5f;
-    --tone-str: #a8c06a;
-    --tone-number: #c0a0d8;
-    --tone-operator: #a79076;
-    --tone-punct: #6e5b48;
-    --tone-meta: #e8b95e;
-    --tone-raw: #e4d6c0;
-    --tone-invalid: #f0685a;
+    --accent-soft: #2c6a63;
+    --selection: #4a2718;
+    --tone-plain: #f2dec4;
+    --tone-comment: #9e8168;
+    --tone-doc: #c0a183;
+    --tone-keyword: #f4794a;
+    --tone-keyword-soft: #c25b36;
+    --tone-type: #e8a165;
+    --tone-call: #ff9e5c;
+    --tone-constant: #e2633f;
+    --tone-str: #a9c06a;
+    --tone-number: #f0c070;
+    --tone-operator: #c39c7a;
+    --tone-punct: #8a6c55;
+    --tone-meta: #ffe0a0;
+    --tone-raw: #f2dec4;
+    --tone-invalid: #ff6b5a;
   }
 }
 
