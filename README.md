@@ -68,7 +68,8 @@ properties, so the two files never have to be reconciled.
 ## Try it
 
 ```sh
-hugo server -s exampleSite
+# the theme is the repository, so point Hugo at the parent of the example site
+hugo server -s exampleSite --themesDir ../..
 ```
 
 ## Licence
