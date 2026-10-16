@@ -5,14 +5,6 @@
     <div class="file-path">{{ with .File }}{{ .Path }}{{ end }}</div>
     <h1 class="file-title">{{ .Title }}</h1>
     <div class="file-rule" aria-hidden="true"></div>
-    <!-- The front matter, as the file writes it: a comment block above the prose. -->
-    <pre class="file-meta" aria-label="{{ i18n "frontMatter" }}"><span class="meta-mark">---</span>
-<span class="meta-key">title</span>: <span class="meta-val">"{{ .Title }}"</span>
-<span class="meta-key">date</span>: <span class="meta-val">{{ .Date.Format "2006-01-02T15:04:05-07:00" }}</span>
-{{- with .Params.tags }}
-<span class="meta-key">tags</span>: [{{ range $i, $t := . }}{{ if $i }}, {{ end }}<span class="meta-val">"{{ $t }}"</span>{{ end }}]
-{{- end }}
-<span class="meta-mark">---</span></pre>
   </header>
 
   <div class="prose" id="prose">{{ .Content }}</div>

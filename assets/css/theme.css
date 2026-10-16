@@ -105,19 +105,6 @@ details[open] > summary > .caret { transform: rotate(90deg) translateX(1px); }
 }
 .file-title { margin: 0 0 0.7rem; font-size: var(--h1); }
 .file-rule { border-top: 1px solid var(--edge); margin-bottom: 1.1rem; }
-.file-meta {
-  font-family: var(--voice-code);
-  font-size: 0.76em;
-  line-height: 1.55;
-  color: var(--ink-faint);
-  background: none;
-  padding: 0;
-  margin: 0 0 2rem;
-  white-space: pre-wrap;
-}
-.file-meta .meta-mark { color: var(--tone-punct); }
-.file-meta .meta-key { color: var(--tone-keyword-soft); }
-.file-meta .meta-val { color: var(--tone-str); }
 
 .prose { color: var(--ink-soft); }
 .prose > p:first-child { margin-top: 0; }
