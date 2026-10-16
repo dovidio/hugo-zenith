@@ -68,9 +68,11 @@ properties, so the two files never have to be reconciled.
 ## Try it
 
 ```sh
-# the theme is the repository, so point Hugo at the parent of the example site
-hugo server -s exampleSite --themesDir ../..
+hugo server -s exampleSite
 ```
+
+`exampleSite/themes/zenith` is a relative symlink back to the theme, so the demo builds
+from a fresh clone with no flags and no install step.
 
 ## Licence
 
